@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <h2 class="col-xs-4">Contacts</h2>
+                <button class="btn btn-success pull-right col-xs-3" style="margin: 14px">New Contact</button>
+                </div>
+            </div>
+            <div class="panel-body" >
+                    <div class="col-xs-12">
+                        <a href="#" class="list-group-item clearfix " *ngFor="let contact of contacts">
+                            <div class="pull-left">
+                                <h4 class="list-group-item-heading">{{ contact.name }}</h4>
+                            </div>
+                            <span class="pull-right">
+                                <img src="{{ contact.imageUrl }}" alt="{{ contact.name }} picture" class="image-responsive" style="max-height: 50px;">
+                            </span>
+                            <!-- component here -->
+                        </a>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</div>
