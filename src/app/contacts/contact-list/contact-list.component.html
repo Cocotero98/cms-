@@ -4,15 +4,14 @@
             <div class="panel-heading">
                 <div class="row">
                     <h2 class="col-xs-4">Contacts</h2>
-                <button class="btn btn-success pull-right col-xs-3" style="margin: 14px">New Contact</button>
+                <button class="btn btn-success pull-right col-xs-3" style="margin: 14px" routerLink="new">New Contact</button>
                 </div>
             </div>
             <div class="panel-body" >
                     <div class="col-xs-12">
                         <cms-contact-item
                             *ngFor="let contactEl of contacts" 
-                            [contact]="contactEl"
-                            (click)="onSelected(contactEl)"
+                            [contact]="contactEl"                            
                         ></cms-contact-item>
                 </div>
                 

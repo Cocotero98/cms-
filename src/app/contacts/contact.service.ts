@@ -6,6 +6,7 @@ import {Injectable, EventEmitter} from '@angular/core';
     providedIn: 'root'
 })
   export class ContactService {
+   contactChangedEvent = new EventEmitter<Contact[]>();
     contactSelectedEvent = new EventEmitter<Contact>();
      contacts: Contact [] =[];
 
@@ -17,13 +18,26 @@ import {Injectable, EventEmitter} from '@angular/core';
         return this.contacts.slice();
      }
 
-     getContact(id: string): Contact | null{
+     getContact(id: string): Contact {
         let contact = this.contacts.find(contact => contact.id === id);
         if(contact!=undefined){
             return contact
         }else{
-            return null;
+            return this.contacts[0];
         }
      }
+
+     deleteContact(contact: Contact) { 
+      if(!contact){
+         return;
+      }
+      const pos= this.contacts.indexOf(contact);
+      if (pos<0){
+         return;
+      }
+      this.contacts.splice(pos,1);
+      this.contactChangedEvent.emit(this.contacts.slice());
+     }
+
 
   }
