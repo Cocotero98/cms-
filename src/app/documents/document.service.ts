@@ -9,7 +9,7 @@ import { Subject } from "rxjs";
 export class DocumentService {
     maxDocumentId!:number
     documentListChangedEvent = new Subject<Document[]>();
-    documentChangedEvent = new EventEmitter<Document[]>();
+    // documentChangedEvent = new EventEmitter<Document[]>();
     documents: Document[]=[];
     documentSelectedEvent = new EventEmitter<Document>();
 

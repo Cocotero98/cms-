@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
 })
   export class ContactService {
    contactsListChangedEvent = new Subject<Contact[]>();
-   contactChangedEvent = new EventEmitter<Contact[]>();
+   // contactChangedEvent = new EventEmitter<Contact[]>();
     contactSelectedEvent = new EventEmitter<Contact>();
      contacts: Contact [] =[];
      maxContactId = 0;
@@ -67,6 +67,7 @@ import { Subject } from 'rxjs';
       }
       newContact.id=originalContact.id;
       this.contacts[pos] = newContact;
+      console.log(newContact)
       let contactsListClone = this.contacts.slice()
       this.contactsListChangedEvent.next(contactsListClone);
    };
