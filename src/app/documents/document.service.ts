@@ -2,6 +2,7 @@ import { Injectable, EventEmitter } from "@angular/core";
 import { MOCKDOCUMENTS } from "./MOCKDOCUMENTS";
 import { Document } from "./document.model";
 import { Subject } from "rxjs";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
@@ -13,14 +14,28 @@ export class DocumentService {
     documents: Document[]=[];
     documentSelectedEvent = new EventEmitter<Document>();
 
-    constructor(){
+    constructor(private http: HttpClient){
         this.documents = MOCKDOCUMENTS;
         this.maxDocumentId = this.getMaxId();
     }
 
 
     getDocuments(){
-        return this.documents.slice();
+        this.http.get<Document[]>('https://cmsagag-default-rtdb.firebaseio.com/')
+        .subscribe(
+            // success method
+            (documents: Document[]) => {
+               this.documents = documents
+               this.maxDocumentId = this.getMaxId()
+              // sort the list of documents
+              this.documents.sort((a,b)=>a.name.localeCompare(b.name));
+              // /emit the next document list change event
+              this.documentListChangedEvent.next(this.documents.slice());
+            }, error=> {
+                console.log(error);
+            }
+            )
+        // return this.documents.slice();
     }
 
     getDocument(id: string): Document{
