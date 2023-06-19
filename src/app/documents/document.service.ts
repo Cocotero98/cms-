@@ -21,12 +21,12 @@ export class DocumentService {
 
 
     getDocuments(){
-        this.http.get<Document[]>('https://cmsagag-default-rtdb.firebaseio.com/')
+        this.http.get<Document[]>('https://cmsagag-default-rtdb.firebaseio.com/documents.json')
         .subscribe(
             // success method
             (documents: Document[]) => {
                this.documents = documents
-               this.maxDocumentId = this.getMaxId()
+               this.maxDocumentId = this.getMaxId();
               // sort the list of documents
               this.documents.sort((a,b)=>a.name.localeCompare(b.name));
               // /emit the next document list change event
@@ -35,7 +35,21 @@ export class DocumentService {
                 console.log(error);
             }
             )
-        // return this.documents.slice();
+        return this.documents.slice();
+    }
+
+    storeDocuments(){
+        let documentsString = JSON.stringify(this.documents);
+        this.http.put<Document[]>(
+            'https://cmsagag-default-rtdb.firebaseio.com/documents.json',
+            documentsString, 
+            {
+                headers: new HttpHeaders({'Content-Type':'application/json'})
+            }).subscribe(
+                ()=>{
+                    this.documentListChangedEvent.next(this.documents.slice())
+                }
+            )
     }
 
     getDocument(id: string): Document{
@@ -67,7 +81,8 @@ export class DocumentService {
         newDocument.id= this.maxDocumentId.toString();
         this.documents.push(newDocument);
         let documentsListClone= this.documents.slice();
-        this.documentListChangedEvent.next(documentsListClone);
+        // this.documentListChangedEvent.next(documentsListClone);
+        this.storeDocuments();
      };
 
      updateDocument(originalDocument: Document, newDocument: Document){
@@ -84,7 +99,8 @@ export class DocumentService {
         newDocument.id=originalDocument.id;
         this.documents[pos] = newDocument;
         let documentsListClone = this.documents.slice()
-        this.documentListChangedEvent.next(documentsListClone);
+        // this.documentListChangedEvent.next(documentsListClone);
+        this.storeDocuments();
      };
 
     deleteDocument(document: Document){
@@ -97,7 +113,8 @@ export class DocumentService {
         }
         this.documents.splice(pos,1);
         let documentsListClone = this.documents.slice();
-        this.documentListChangedEvent.next(documentsListClone);
+        // this.documentListChangedEvent.next(documentsListClone);
+        this.storeDocuments();
     } 
 
     
