@@ -1,0 +1,9 @@
+###
+POST http://localhost:3000/messages HTTP/1.1 content-type: application/json
+
+{
+    "id": "3",
+    "subject": "test",
+    "msgText": "testing",
+    "sender": "ObjectId('649ed472368cf50771ea7726')"
+}

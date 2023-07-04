@@ -15,7 +15,10 @@ export class MessageItemComponent implements OnInit{
   constructor(private contactService: ContactService){};
 
   ngOnInit(): void {
-    const contact: Contact | null = this.contactService.getContact(this.message.sender);
+    console.log(this.message.sender)
+    let newContact = JSON.parse(JSON.stringify(this.message.sender))
+    console.log(newContact)
+    const contact: Contact | null = this.contactService.getContact(newContact.id);
     if (contact!=null){
       this.messageSender = contact.name;
     }else{console.log('nus')}

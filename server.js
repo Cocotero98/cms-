@@ -1,4 +1,5 @@
 // Get dependencies
+var mongoose = require('mongoose');
 var express = require('express');
 var path = require('path');
 var http = require('http');
@@ -51,6 +52,12 @@ app.use('/messages', messageRoutes);
 app.use('/contacts', contactRoutes);
 app.use('/documents', documentsRoutes);
 
+// establish a connection to the mongo database
+mongoose.connect("mongodb://127.0.0.1:27017/cms", { useNewUrlParser: true })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.log("Connection failed: " + err));
+
+   
 // Tell express to map all other non-defined routes back to the index page
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist/cms/index.html'));

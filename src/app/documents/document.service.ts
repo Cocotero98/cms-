@@ -21,7 +21,7 @@ export class DocumentService {
 
 
     getDocuments(){
-        this.http.get<Document[]>('https://cmsagag-default-rtdb.firebaseio.com/documents.json')
+        this.http.get<Document[]>('http://localhost:3000/documents')
         .subscribe(
             // success method
             (documents: Document[]) => {
@@ -74,47 +74,76 @@ export class DocumentService {
     //  }
 
      addDocument(newDocument: Document){
-        if(newDocument===undefined || newDocument === null){
+        if(!newDocument){
             return
         }
-        this.maxDocumentId++;
-        newDocument.id= this.maxDocumentId.toString();
-        this.documents.push(newDocument);
-        let documentsListClone= this.documents.slice();
-        // this.documentListChangedEvent.next(documentsListClone);
-        this.storeDocuments();
+        newDocument.id = "";
+        const headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+        this.http.post<{ message: string, document: Document }>('http://localhost:3000/documents',
+            newDocument,
+            { headers: headers })
+            .subscribe(
+                (responseData) => {
+                    // add new document to documents
+                    this.documents.push(responseData.document);
+                    this.documentListChangedEvent.next(this.documents.slice());
+                  }
+            )
+
+        // this.maxDocumentId++;
+        // newDocument.id= this.maxDocumentId.toString();
+        // this.documents.push(newDocument);
+        // let documentsListClone= this.documents.slice();
+        // // this.documentListChangedEvent.next(documentsListClone);
+        // this.storeDocuments();
      };
 
      updateDocument(originalDocument: Document, newDocument: Document){
-        if(originalDocument===undefined||
-            originalDocument===null||
-            newDocument===undefined||
-            newDocument===null){
-            return
-        };
+        if (!originalDocument || !newDocument) {
+            return;
+          }
         let pos= this.documents.indexOf(originalDocument);
         if(pos<0){
             return
         }
         newDocument.id=originalDocument.id;
-        this.documents[pos] = newDocument;
-        let documentsListClone = this.documents.slice()
-        // this.documentListChangedEvent.next(documentsListClone);
-        this.storeDocuments();
+        // newDocument._id=originalDocument._id;
+        const headers =  new HttpHeaders({'Content-Type': 'application/json'});
+        this.http.put('http://localhost:3000/documents/' + originalDocument.id,
+      newDocument, { headers: headers })
+      .subscribe(
+        () => {
+          this.documents[pos] = newDocument;
+          this.documentListChangedEvent.next(this.documents.slice());
+        }
+      );
+
+        // this.documents[pos] = newDocument;
+        // let documentsListClone = this.documents.slice()
+        // // this.documentListChangedEvent.next(documentsListClone);
+        // this.storeDocuments();
      };
 
     deleteDocument(document: Document){
-        if(document === undefined || document === null){
-            return
-        }
+        if (!document) {
+            return;
+          }
         let pos= this.documents.indexOf(document);
         if (pos < 0){
             return
         }
-        this.documents.splice(pos,1);
-        let documentsListClone = this.documents.slice();
-        // this.documentListChangedEvent.next(documentsListClone);
-        this.storeDocuments();
+        this.http.delete('http://localhost:3000/documents/' + document.id)
+        .subscribe(
+          () => {
+            this.documents.splice(pos, 1);
+            this.documentListChangedEvent.next(this.documents.slice());
+          }
+        );
+        // this.documents.splice(pos,1);
+        // let documentsListClone = this.documents.slice();
+        // // this.documentListChangedEvent.next(documentsListClone);
+        // this.storeDocuments();
     } 
 
     

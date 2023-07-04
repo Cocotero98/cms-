@@ -15,12 +15,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
      maxContactId = 0;
 
      constructor(private http: HttpClient) {
-        this.contacts = MOCKCONTACTS;
+        // this.contacts = MOCKCONTACTS;
+        this.contacts = this.getContacts()
         this.maxContactId = this.getMaxId();
      }
 
      getContacts(): Contact[]{
-        this.http.get<Contact[]>('https://cmsagag-default-rtdb.firebaseio.com/contacts.json')
+        this.http.get<Contact[]>('http://localhost:3000/contacts/')
         .subscribe(
             // success method
             (contacts: Contact[]) => {
@@ -40,7 +41,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
      storeContacts(){
         let contactsString= JSON.stringify(this.contacts);
         this.http.put<Contact[]>(
-            'https://cmsagag-default-rtdb.firebaseio.com/contacts.json',
+            'http://localhost:3000/contacts/',
             contactsString,
             {
                 headers: new HttpHeaders({
@@ -52,8 +53,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
      }
 
      getContact(id: string): Contact {
+      // console.log(id)
+      // console.log(this.contacts)
+      // id='7'
+      console.log(this.contacts)
         let contact = this.contacts.find(contact => contact.id === id);
         if(contact!=undefined){
+          console.log(contact)
             return contact
         }else{
             return this.contacts[0];
@@ -73,22 +79,31 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
    //   }
 
    addContact(newContact: Contact){
-      if(newContact===undefined || newContact === null){
+      if(!newContact){
           return
       }
-      this.maxContactId++;
-      newContact.id= this.maxContactId.toString();
-      this.contacts.push(newContact);
-      let documentsListClone= this.contacts.slice();
-    //   this.contactsListChangedEvent.next(documentsListClone);
-      this.storeContacts();
+      newContact.id= "";
+      const headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+      this.http.post<{ message: string, contact: Contact }>('http://localhost:3000/contacts',
+        newContact,
+        {headers: headers})
+        .subscribe(
+            (responseData) => {
+                // add new document to documents
+                this.contacts.push(responseData.contact);
+                this.contactsListChangedEvent.next(this.contacts.slice());
+              }
+        )
+
+    //   this.contacts.push(newContact);
+    //   let documentsListClone= this.contacts.slice();
+    // //   this.contactsListChangedEvent.next(documentsListClone);
+    //   this.storeContacts();
    };
 
    updateContact(originalContact: Contact, newContact: Contact){
-      if(originalContact===undefined||
-         originalContact===null||
-         newContact===undefined||
-         newContact===null){
+      if(!originalContact || !newContact){
           return
       };
       let pos= this.contacts.indexOf(originalContact);
@@ -96,11 +111,20 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
           return
       }
       newContact.id=originalContact.id;
-      this.contacts[pos] = newContact;
-      console.log(newContact)
-      let contactsListClone = this.contacts.slice()
-    //   this.contactsListChangedEvent.next(contactsListClone);
-    this.storeContacts();
+    //   this.contacts[pos] = newContact;
+    console.log(newContact)
+    const headers =  new HttpHeaders({'Content-Type': 'application/json'});
+      this.http.put('http://localhost:3000/contacts/' + originalContact.id, newContact, { headers:headers })
+      .subscribe(()=>{
+        this.contacts[pos] = newContact;
+        this.contactsListChangedEvent.next(this.contacts.slice())
+      })
+
+
+
+    //   let contactsListClone = this.contacts.slice()
+    // //   this.contactsListChangedEvent.next(contactsListClone);
+    // this.storeContacts();
 };
 
   deleteContact(contact: Contact){
@@ -111,10 +135,17 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
       if (pos < 0){
           return
       }
-      this.contacts.splice(pos,1);
-      let contactsListClone = this.contacts.slice();
+
+      this.http.delete('http://localhost:3000/contacts/' + contact.id)
+      .subscribe(()=>{
+        this.contacts.splice(pos,1);
+        this.contactsListChangedEvent.next(this.contacts.slice())
+      })
+
+      
+    //   let contactsListClone = this.contacts.slice();
     //   this.contactsListChangedEvent.next(contactsListClone);
-    this.storeContacts();
+    // this.storeContacts();
 } 
 
   
