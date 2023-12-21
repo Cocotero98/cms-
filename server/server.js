@@ -8,10 +8,10 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 // import the routing file to handle the default (index) route
-var index = require('./server/routes/app');
-const messageRoutes = require('./server/routes/messages');
-const contactRoutes = require('./server/routes/contacts');
-const documentsRoutes = require('./server/routes/documents');
+var index = require('./routes/app');
+const messageRoutes = require('./routes/messages');
+const contactRoutes = require('./routes/contacts');
+const documentsRoutes = require('./routes/documents');
 
 // ... ADD CODE TO IMPORT YOUR ROUTING FILES HERE ... 
 
