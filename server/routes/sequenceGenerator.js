@@ -14,12 +14,12 @@ function SequenceGenerator() {
       maxMessageId = sequence.maxMessageId;
       maxContactId = sequence.maxContactId;
     })
-    // .catch((err)=>{
-    //   return res.status(500).json({
-    //       title: 'An error occurred',
-    //       error: err
-    //     });
-    // });      
+    .catch((err)=>{
+      return res.status(500).json({
+          title: 'An error occurred',
+          error: err
+        });
+    });      
     };
 
 
