@@ -7,21 +7,38 @@ var sequenceId = null;
 
 function SequenceGenerator() {
 
-  Sequence.findOne()
-      .then((sequence) => { 
-        // console.log(sequence);
-      sequenceId = sequence._id;
-      maxDocumentId = sequence.maxDocumentId;
-      maxMessageId = sequence.maxMessageId;
-      maxContactId = sequence.maxContactId;
-    })
-    .catch((err)=>{
-      console.log(err);
-      reject({
-        title: 'An error occurred',
-        error: err,
+  return new Promise((resolve, reject) => {
+    Sequence.findOne()
+      .then((sequence) => {
+        sequenceId = sequence._id;
+        maxDocumentId = sequence.maxDocumentId;
+        maxMessageId = sequence.maxMessageId;
+        maxContactId = sequence.maxContactId;
+        resolve();
+      })
+      .catch((err) => {
+        console.log(err);
+        reject({
+          title: 'An error occurred',
+          error: err,
+        });
       });
-    });      
+  });
+  // Sequence.findOne()
+  //     .then((sequence) => { 
+  //       // console.log(sequence);
+  //     sequenceId = sequence._id;
+  //     maxDocumentId = sequence.maxDocumentId;
+  //     maxMessageId = sequence.maxMessageId;
+  //     maxContactId = sequence.maxContactId;
+  //   })
+  //   .catch((err)=>{
+  //     console.log(err);
+  //     return res.status(500).json({
+  //         title: 'An error occurred',
+  //         error: err
+  //       });
+  //   });      
     };
 
 
