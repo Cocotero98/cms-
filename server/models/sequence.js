@@ -6,4 +6,4 @@ const sequenceSchema = mongoose.Schema({
     maxContactId: { type: Number, required: true}
 })
 
-module.exports = mongoose.model('Sequences', sequenceSchema);
+module.exports = mongoose.model('Sequences', sequenceSchema, 'sequences');

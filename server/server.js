@@ -6,6 +6,8 @@ var http = require('http');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+require('dotenv').config();
+console.log(process.env.PWD)
 
 // import the routing file to handle the default (index) route
 var index = require('./routes/app');
@@ -53,9 +55,19 @@ app.use('/contacts', contactRoutes);
 app.use('/documents', documentsRoutes);
 
 // establish a connection to the mongo database
-mongoose.connect("mongodb://127.0.0.1:27017/cms", { useNewUrlParser: true })
-  .then(() => console.log("Connected to MongoDB"))
+mongoose.connect(`mongodb+srv://${process.env.USER}:${process.env.PWD}@cms.dx7arj1.mongodb.net/cms`, { useNewUrlParser: true })
+  .then(async () => {
+    console.log("Connected to MongoDB");
+    const collections = await mongoose.connection.db.listCollections().toArray();
+    collections.map((coll)=>console.log(coll.name))
+    // console.log(collections)
+  })
   .catch((err) => console.log("Connection failed: " + err));
+  
+ 
+// mongoose.connect("mongodb://127.0.0.1:27017/cms", { useNewUrlParser: true })
+//   .then(() => console.log("Connected to MongoDB"))
+//   .catch((err) => console.log("Connection failed: " + err));
 
    
 // Tell express to map all other non-defined routes back to the index page

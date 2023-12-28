@@ -7,20 +7,16 @@ var sequenceId = null;
 
 function SequenceGenerator() {
 
-  Sequence.findOne()
+  Sequence.find()
       .then((sequence) => { 
-        // console.log(sequence);
+        console.log(sequence)
       sequenceId = sequence._id;
       maxDocumentId = sequence.maxDocumentId;
       maxMessageId = sequence.maxMessageId;
       maxContactId = sequence.maxContactId;
     })
     .catch((err)=>{
-      console.log(err);
-      return res.status(500).json({
-          title: 'An error occurred',
-          error: err
-        });
+      console.error("Error finding sequence:", err);
     });      
     };
 
