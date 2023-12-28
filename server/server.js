@@ -7,7 +7,6 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 require('dotenv').config();
-console.log(process.env.PWD)
 
 // import the routing file to handle the default (index) route
 var index = require('./routes/app');
