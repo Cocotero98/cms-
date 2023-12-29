@@ -56,9 +56,9 @@ app.use('/contacts', contactRoutes);
 app.use('/documents', documentsRoutes);
 
 // establish a connection to the mongo database
-mongoose.connect(`mongodb+srv://${process.env.USER}:${process.env.PWD}@cms.dx7arj1.mongodb.net/cms`, { useNewUrlParser: true })
+mongoose.connect(`mongodb+srv://${process.env.USERPWD}@cms.dx7arj1.mongodb.net/cms`, { useNewUrlParser: true })
   .then(async () => {
-    console.log("Connected to MongoDB"+pwd+user);
+    console.log("Connected to MongoDB");
     const collections = await mongoose.connection.db.listCollections().toArray();
     collections.map((coll)=>console.log(coll.name))
     // console.log(collections)
