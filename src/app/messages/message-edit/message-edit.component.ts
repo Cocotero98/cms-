@@ -26,7 +26,6 @@ export class MessageEditComponent implements OnInit{
 
   onSendMessage(){
     this.currentSender = this.contactService.getContact('101');
-    console.log(this.currentSender)
     const currentSubject = this.subject.nativeElement.value;
     const currentMsg = this.msgText.nativeElement.value;
     const newMessage = new Message('1',currentSubject,currentMsg, this.currentSender);

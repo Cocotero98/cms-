@@ -25,7 +25,6 @@ export class MessageListComponent implements OnInit, OnDestroy{
   onAddMessage(message: Message){
     
     this.messages.push(message);
-    console.log(this.messages)
 
   }
 

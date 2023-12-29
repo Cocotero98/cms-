@@ -30,7 +30,7 @@ export class MessageService {
     }
 
      getMessages(){
-         this.http.get<Message[]>('http://localhost:3000/messages/')
+         this.http.get<Message[]>('https://cms-app-agag.onrender.com/messages/')
             .subscribe(
                 (messages:Message[])=>{
                     this.messages = messages;
@@ -46,9 +46,8 @@ export class MessageService {
 
     storeMessages(){
         let messagesString = JSON.stringify(this.messages);
-        console.log(messagesString)
         this.http.put<Message[]>(
-            'http://localhost:3000/messages',
+            'https://cms-app-agag.onrender.com/messages/',
             messagesString,
             {headers: new HttpHeaders({
                 'Content-type':'application/json'
@@ -69,11 +68,10 @@ export class MessageService {
         if(!message){
             return
         }
-        console.log(message.sender)
         message.id="";
         const headers = new HttpHeaders({'Content-Type': 'application/json'});
 
-        this.http.post<{ info: string, message: Message}>('http://localhost:3000/messages',
+        this.http.post<{ info: string, message: Message}>('https://cms-app-agag.onrender.com/messages/',
         message,
         {headers: new HttpHeaders({
             'Content-type':'application/json'

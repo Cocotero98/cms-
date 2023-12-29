@@ -13,8 +13,7 @@ export class DocumentItemComponent implements OnInit{
 
   
   ngOnInit(): void {
-    this.newRoute = '/documents/'+this.document.id
-    console.log(this.newRoute)
+    this.newRoute = '/documents/'+this.document.id;
   }
 
 }

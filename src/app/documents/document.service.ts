@@ -80,7 +80,7 @@ export class DocumentService {
         newDocument.id = "";
         const headers = new HttpHeaders({'Content-Type': 'application/json'});
 
-        this.http.post<{ message: string, document: Document }>('http://localhost:3000/documents',
+        this.http.post<{ message: string, document: Document }>('https://cms-app-agag.onrender.com/documents/',
             newDocument,
             { headers: headers })
             .subscribe(
@@ -110,7 +110,7 @@ export class DocumentService {
         newDocument.id=originalDocument.id;
         // newDocument._id=originalDocument._id;
         const headers =  new HttpHeaders({'Content-Type': 'application/json'});
-        this.http.put('http://localhost:3000/documents/' + originalDocument.id,
+        this.http.put('https://cms-app-agag.onrender.com/documents/' + originalDocument.id,
       newDocument, { headers: headers })
       .subscribe(
         () => {
@@ -133,7 +133,7 @@ export class DocumentService {
         if (pos < 0){
             return
         }
-        this.http.delete('http://localhost:3000/documents/' + document.id)
+        this.http.delete('https://cms-app-agag.onrender.com/documents/' + document.id)
         .subscribe(
           () => {
             this.documents.splice(pos, 1);

@@ -21,7 +21,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
      }
 
      getContacts(): Contact[]{
-        this.http.get<Contact[]>('http://localhost:3000/contacts/')
+        this.http.get<Contact[]>('https://cms-app-agag.onrender.com/contacts/')
         .subscribe(
             // success method
             (contacts: Contact[]) => {
@@ -41,7 +41,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
      storeContacts(){
         let contactsString= JSON.stringify(this.contacts);
         this.http.put<Contact[]>(
-            'http://localhost:3000/contacts/',
+            'https://cms-app-agag.onrender.com/contacts/',
             contactsString,
             {
                 headers: new HttpHeaders({
@@ -53,13 +53,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
      }
 
      getContact(id: string): Contact {
-      // console.log(id)
-      // console.log(this.contacts)
-      // id='7'
-      console.log(this.contacts)
         let contact = this.contacts.find(contact => contact.id === id);
         if(contact!=undefined){
-          console.log(contact)
             return contact
         }else{
             return this.contacts[0];
@@ -85,7 +80,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
       newContact.id= "";
       const headers = new HttpHeaders({'Content-Type': 'application/json'});
 
-      this.http.post<{ message: string, contact: Contact }>('http://localhost:3000/contacts',
+      this.http.post<{ message: string, contact: Contact }>('https://cms-app-agag.onrender.com/contacts/',
         newContact,
         {headers: headers})
         .subscribe(
@@ -111,10 +106,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
           return
       }
       newContact.id=originalContact.id;
-    //   this.contacts[pos] = newContact;
-    console.log(newContact)
     const headers =  new HttpHeaders({'Content-Type': 'application/json'});
-      this.http.put('http://localhost:3000/contacts/' + originalContact.id, newContact, { headers:headers })
+      this.http.put('https://cms-app-agag.onrender.com/contacts/' + originalContact.id, newContact, { headers:headers })
       .subscribe(()=>{
         this.contacts[pos] = newContact;
         this.contactsListChangedEvent.next(this.contacts.slice())
@@ -136,7 +129,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
           return
       }
 
-      this.http.delete('http://localhost:3000/contacts/' + contact.id)
+      this.http.delete('https://cms-app-agag.onrender.com/contacts/' + contact.id)
       .subscribe(()=>{
         this.contacts.splice(pos,1);
         this.contactsListChangedEvent.next(this.contacts.slice())
