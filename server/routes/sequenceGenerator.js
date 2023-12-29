@@ -7,7 +7,7 @@ var sequenceId = null;
 
 function SequenceGenerator() {
 
-  Sequence.find()
+  Sequence.findOne()
       .then((sequence) => { 
         console.log(sequence)
       sequenceId = sequence._id;
