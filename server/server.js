@@ -8,6 +8,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 require('dotenv').config();
 var pwd = encodeURIComponent(process.env.PWD);
+var user = encodeURIComponent(process.env.USER);
 
 // import the routing file to handle the default (index) route
 var index = require('./routes/app');
@@ -55,9 +56,9 @@ app.use('/contacts', contactRoutes);
 app.use('/documents', documentsRoutes);
 
 // establish a connection to the mongo database
-mongoose.connect(`mongodb+srv://${process.env.USER}:${pwd}@cms.dx7arj1.mongodb.net/cms`, { useNewUrlParser: true })
+mongoose.connect(`mongodb+srv://${user}:${pwd}@cms.dx7arj1.mongodb.net/cms`, { useNewUrlParser: true })
   .then(async () => {
-    console.log("Connected to MongoDB");
+    console.log("Connected to MongoDB"+pwd+user);
     const collections = await mongoose.connection.db.listCollections().toArray();
     collections.map((coll)=>console.log(coll.name))
     // console.log(collections)
