@@ -14,7 +14,7 @@ router.get('/', (req, res, next) => {
     .catch(err=>{
         return res.status(500).json({
             title: "An error occurred",
-            error: err
+            error: err.message
         })
     })
 })
